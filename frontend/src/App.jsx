@@ -15,7 +15,7 @@ import AdminProfile from "@/pages/admin/AdminProfile";
 import AdminLayout from '@/components/admin/layout';
 import UserLayout from '@/components/user/layout';
 import Service from '@/pages/user/Service';
-import Homepage from '@/pages/common/homepage';
+import Homepage from '@/pages/common/Homepage';
 import Navv from '@/components/common/Navv';
 import Home from '@/pages/user/Home';
 import ServiceLayout from '@/components/user/ServiceLayout';
