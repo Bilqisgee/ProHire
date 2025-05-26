@@ -25,5 +25,13 @@ export default defineConfig({
   ],
   build: {
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          radix: ['@radix-ui/react-select', '@radix-ui/react-toast'],
+        },
+      },
+    },
   },
 });
