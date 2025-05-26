@@ -1,6 +1,7 @@
 import { fileURLToPath } from "url";
 import path from "path";
 import { defineConfig } from 'vite';
+import { replace } from "react-router-dom";
 
 
 
@@ -12,5 +13,17 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  plugins: [
+    replace({
+      replacements: [
+        {
+          from: '"use client";', to: ''
+        }
+      ]
+    })
+  ],
+  build: {
+    sourcemap: false,
   },
 });
