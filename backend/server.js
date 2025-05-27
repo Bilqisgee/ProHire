@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import { connectDB } from './config/db.js';
 import cors from 'cors';
@@ -7,11 +10,12 @@ import messageRoute from './routes/messageRoutes.js';
 import profileRoute from './routes/admin/profileRoute.js';
 import UserProfileRoutes from './routes/user/UserProfileRoutes.js';
 import { app, server } from './config/socket.js';
-import { fileURLToPath } from 'url';
-import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load .env from the root directory
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 app.use(cookieParser());
 app.use(express.json());
@@ -44,11 +48,16 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Connect DB and start server
-connectDB();
-
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-    console.log(`Server started at http://localhost:${PORT}`);
-}).on('error', (err) => {
-    console.error('Server error:', err);
-});
+connectDB()
+    .then(() => {
+        server.listen(PORT, () => {
+            console.log(`Server started at http://localhost:${PORT}`);
+        }).on('error', (err) => {
+            console.error('Server error:', err);
+        });
+    })
+    .catch((err) => {
+        console.error('Failed to connect to MongoDB:', err);
+        process.exit(1);
+    });
