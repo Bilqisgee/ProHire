@@ -11,11 +11,13 @@ import profileRoute from './routes/admin/profileRoute.js';
 import UserProfileRoutes from './routes/user/UserProfileRoutes.js';
 import { app, server } from './config/socket.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load .env from the root directory
-dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config({ path: path.join(__dirname, './.env') });
+
 
 app.use(cookieParser());
 app.use(express.json());

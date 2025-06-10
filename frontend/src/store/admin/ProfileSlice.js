@@ -35,11 +35,14 @@ export const updateProfile = createAsyncThunk(
                 `http://localhost:5000/api/admin/profile-admin/update/${userId}/${profileId}`,
                 formData
             );
-            console.log("Update Profile Response:", response.data);
+        ;
             return response.data; // Ensure this returns the updated profile
         } catch (error) {
-            console.error("Error in updateProfile thunk:", error);
-            throw error;
+           // Throw a more specific error message
+           throw new Error(
+            error.response?.data?.message || 
+            error.message || 
+            "Failed to update profile")
         }
     }
 );

@@ -26,26 +26,22 @@ export const viewProfile = createAsyncThunk(
 export const updateUserProfile = createAsyncThunk(
     "profile/updateUserProfile",
     async ({ userId, profileId, formData }) => {
-
-
-
-        if (!userId || !profileId) {
-            throw new Error("userId and profileId must be defined");
-        }
-
         try {
             const response = await axios.put(
-              `http://localhost:5000/api/user/profile/update/${userId}/${profileId}`  ,
-                formData
+                `http://localhost:5000/api/user/profile/update/${userId}/${profileId}`,
+                formData,
             );
-            console.log("Update Profile Response:", response.data);
-            return response.data; // Ensure this returns the updated profile
+            return response.data;
         } catch (error) {
-            console.error("Error in updateProfile thunk:", error);
-            throw error;
+            // Throw a more specific error message
+            throw new Error(
+                error.response?.data?.message || 
+                error.message || 
+                "Failed to update profile"
+            );
         }
     }
-)
+);
 
 
 const userProfileSlice = createSlice({

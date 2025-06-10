@@ -59,51 +59,53 @@ function AdminProfile() {
         }
     }, [profileId, user?.id]);
 
-    function handleManageProfile(e) {
-        e.preventDefault();
-
-        console.log("User Object:", user);
-
-        
-        // Check for required fields
-        if (!formData.name || !formData.email || !formData.phone) {
-            toast({
-                title: "Please fill in all required fields",
-                variant: "destructive",
-            });
-            return;
-        }
-
-        if (formData._id) {
-           console.log("Updating profile with data:", formData);
-            dispatch(
-                updateProfile({
-                    userId: user?.id,
-                    profileId: formData._id,
-                    formData,
-                })
-            ).then((data) => {
-                if (data?.payload?.success) {
-                    toast({
-                        title: "Profile updated successfully",
-                    });
-                    setIsEditing(false);
-                } else {
-                    toast({
-                        title: "Failed to update profile",
-                        variant: "destructive",
-                    });
-                }
-            }).catch((error) => {
-                console.error("Error updating profile:", error);
-                toast({
-                    title: "Error updating profile",
-                    variant: "destructive",
-                });
-            });
-        } 
-        
-    }
+     function handleManageProfile(e) {
+               e.preventDefault();
+       
+               console.log("User Object:", user);
+       
+               
+               // Check for required fields
+               if (!formData) {
+                   toast({
+                       title: "Please fill in all required fields",
+                       variant: "destructive",
+                   });
+                   return;
+               }
+       
+               const userId = user?._id; // Use _id for user ID
+               const profileIdValue = formData._id; // Ensure this is set correctly
+               if (userId && profileIdValue) { // Check if both IDs are defined
+                   console.log("Updating profile with data:", formData);
+                   dispatch(
+                       updateProfile({
+                           userId: userId,
+                           profileId: profileIdValue,
+                           formData,
+                       })
+                   ).then((data) => {
+                       if (data?.payload?.success) {
+                           toast({
+                               title: "Profile updated successfully",
+                           });
+                           setIsEditing(false);
+                       } else {
+                           toast({
+                               title: "Failed to update profile",
+                               variant: "destructive",
+                           });
+                       }
+                   }).catch((error) => {
+                       console.error("Error updating profile:", error);
+                       toast({
+                           title: "Error updating profile",
+                           variant: "destructive",
+                       });
+                   });
+               } 
+               
+           }
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -119,8 +121,9 @@ function AdminProfile() {
         const file = e.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            setFormData({ ...formData, image: imageUrl });
+            setFormData({ ...formData, image: file, imageUrl });
         }
+        
     }
 
     return (
